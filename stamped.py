@@ -14,16 +14,24 @@ from bs4 import BeautifulSoup, ResultSet
 def print_hi():
   for x in range(6):
     page = str(x)
-    url2 = 'https://stamped.io/api/widget?productId=7557345673410&productName=Circle%20Necklace%20Silver%20-%20Elsa&productSKU=circle-necklace-silver-elsa&page='+page+'&apiKey=pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN&sId=12175&take=5&widgetLanguage=en'
+     # url2 = 'https://stamped.io/api/widget?productId='+ProductId+'&productName=Circle%20Necklace%20Silver%20-%20Elsa&productSKU=circle-necklace-silver-elsa&page='+page+'&apiKey=pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN&sId=12175&take=5&widgetLanguage=en'
+    # url3 = 'https://stamped.io/api/widget?productId=7126723690682&productName=TreeBlend+Classic+T-Shirt&productType=Womens&productSKU=TCW2455-0016-XS&page='+page+'&apiKey=pubkey-LO1Xa8x73gKEGHN3Wryy0ivU11p2tu&sId=32040&take=5&sort=recent&widgetLanguage=en'
+    # url4='https://stamped.io/api/widget?productId=7557336006850&productName=Bar+Necklace+Silver+-+Hanne&productSKU=bar-necklace-silver-hanne&page='+page+'&apiKey=pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN&sId=12175&take=5&widgetLanguage=en'
 
-    r = requests.get(url2)
+
+    r = requests.get(url4)
     soup=BeautifulSoup(r.content,'html5lib')
     f=open("/tmp/review.html", 'w')
     f.write(r.content.decode())
     f.close()
 
     tables = soup.find_all('div', attrs={'class': '\\"stamped-review\\"'})
+
+    # print(tables)
+
+
     for table in tables:
+
         Created = table.find('div', attrs={'class': '\\"created\\"'}).text
         Author=table.find('strong', attrs={'class': '\\"author\\"'}).text
         Location= table.find('div', attrs={'class': '\\"review-location\\"'}).text
@@ -39,7 +47,8 @@ def print_hi():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
-    url1 = 'https://www.linjer.co/collections/last-chance-sale/products/circle-necklace-silver-elsa'
+    # url1 = 'https://www.linjer.co/collections/last-chance-sale/products/circle-necklace-silver-elsa'
+    url2='https://www.tentree.com/collections/womens-best-sellers/products/womens-basic-tee-white'
     req = requests.get(url1)
     soup = BeautifulSoup(req.content, 'html5lib')
     f = open("/tmp/PageContent.html", 'w')
@@ -47,17 +56,19 @@ if __name__ == '__main__':
     f.close()
 
 
-    # Data_ID = soup.find_all('span', attrs={'class': 'stamped-product-reviews-badge stamped-main-badge' })
-    # Api_Key= soup.find_all('form',attrs={'id':'new-question-form', 'class':'new-question-form'})
-    Api_Key = soup.find('section', attrs={'id' : 'shopify-section-template--15977704227010__reviews'})
-    Info=Api_Key.find('div', attrs={'class':'stamped-main-widget'})
-    children = Info.findChildren("div", attrs={'class':'stamped-container'})
-    keys = Api_Key.find_all('div', attrs={'class':'stamped-container'})
+    Data_ID = soup.find_all('span', attrs={'class': 'stamped-product-reviews-badge stamped-main-badge' })
 
-    # print(Api_Key)
+    # Api_Key= soup.find_all('form',attrs={'id':'new-question-form', 'class':'new-question-form'})
+    # Api_Key = soup.find('section', attrs={'id' : 'shopify-section-template--15977704227010__reviews'})
+    # Info=Api_Key.find('div', attrs={'class':'stamped-main-widget'})
+    # children = Info.findChildren("div", attrs={'class':'stamped-container'})
+    # keys = Api_Key.find_all('div', attrs={'class':'stamped-container'})
+
+    # print_hi(Info['data-product-id'])
+    print(Data_ID)
     # print(Info['data-name'])
     # print(Info['data-product-id'])
-    print(Api_Key)
+    # print(Api_Key)
     # print_hi()
 
 
