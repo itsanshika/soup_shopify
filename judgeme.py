@@ -12,7 +12,6 @@ def Reviws_Data(productid):
     urlpage6 = 'https://judge.me/reviews/reviews_for_widget?url=zilch-cosmetics.myshopify.com&shop_domain=zilch-cosmetics.myshopify.com&platform=shopify&page=2&per_page=5&product_id='+productid
     r = requests.get(urlpage3)
     x = r.content.decode()
-    x.encode()
     y = x.encode().decode("unicode-escape")
 
     soup = BeautifulSoup(y, 'html5lib')
@@ -35,7 +34,7 @@ if __name__ == '__main__':
 
     url6 = 'https://zilchcosmetics.com/collections/face/products/afterglow?variant=33427662733445'
     url3='https://plumgoodness.com/products/phy-vitamin-sea-mint-sea-kelp-energizing-body-wash'
-    req = requests.get(url1)
+    req = requests.get(url3)
     soup = BeautifulSoup(req.content, 'html5lib')
     f = open("/tmp/JudgeMe.html", 'w')
     f.write(req.content.decode())
