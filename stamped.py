@@ -6,17 +6,18 @@ from typing import Any
 
 import requests
 from bs4 import BeautifulSoup, ResultSet
+import json
 
 # url1='https://www.linjer.co/collections/last-chance-sale/products/circle-necklace-silver-elsa'
 
 
 
-def print_hi():
-  for x in range(6):
+def print_hi(productId,productName,productSKU,apiKey,Id):
+  for x in range(20):
     page = str(x)
-     # url2 = 'https://stamped.io/api/widget?productId='+ProductId+'&productName=Circle%20Necklace%20Silver%20-%20Elsa&productSKU=circle-necklace-silver-elsa&page='+page+'&apiKey=pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN&sId=12175&take=5&widgetLanguage=en'
+    # url2 = 'https://stamped.io/api/widget?productId='+ProductId+'&productName=Circle%20Necklace%20Silver%20-%20Elsa&productSKU=circle-necklace-silver-elsa&page='+page+'&apiKey=pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN&sId=12175&take=5&widgetLanguage=en'
     # url3 = 'https://stamped.io/api/widget?productId=7126723690682&productName=TreeBlend+Classic+T-Shirt&productType=Womens&productSKU=TCW2455-0016-XS&page='+page+'&apiKey=pubkey-LO1Xa8x73gKEGHN3Wryy0ivU11p2tu&sId=32040&take=5&sort=recent&widgetLanguage=en'
-     url4='https://stamped.io/api/widget?productId=7557336006850&productName=Bar+Necklace+Silver+-+Hanne&productSKU=bar-necklace-silver-hanne&page='+page+'&apiKey=pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN&sId=12175&take=5&widgetLanguage=en'
+    url4='https://stamped.io/api/widget?productId='+productId+'&productName='+productName+'&productSKU='+productSKU+'&page='+page+'&apiKey='+apiKey+'&sId='+Id+'&take=5&widgetLanguage=en'
 
 
     r = requests.get(url4)
@@ -37,7 +38,14 @@ def print_hi():
         Location= table.find('div', attrs={'class': '\\"review-location\\"'}).text
         Content= table.find('p', attrs={'class': '\\"stamped-review-content-body\\"'}).text
 
-        print(Created , Author, Location, Content)
+        # print(Created , Author, Location, Content)
+        data = {
+            "REVIEWER_PROFILE": Author,
+            "RATING": "NULL",
+            "REVIEW_CONTENT": Content,
+            "REVIEW_DATE": Created
+        }
+        print(json.dumps(data))
 
 
     # Use a breakpoint in the code line below to debug your script.
@@ -65,11 +73,16 @@ if __name__ == '__main__':
     # keys = Api_Key.find_all('div', attrs={'class':'stamped-container'})
 
     # print_hi(Info['data-product-id'])
-    print(Data_ID)
+    # print(Data_ID)
     # print(Info['data-name'])
     # print(Info['data-product-id'])
     # print(Api_Key)
-    # print_hi()
+    productId='7557336006850'
+    productName='Bar+Necklace+Silver+-+Hanne'
+    productSKU='bar-necklace-silver-hanne'
+    apiKey='pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN'
+    Id='12175'
+    print_hi(productId,productName,productSKU,apiKey,Id)
 
 
     # for data in Info:
