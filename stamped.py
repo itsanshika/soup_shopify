@@ -81,7 +81,7 @@ if __name__ == '__main__':
     productSKU='bar-necklace-silver-hanne'
     apiKey='pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN'
     Id='12175'
-    page=10;
+    page=10
     Review_Info(productId,productName,productSKU,apiKey,Id,page)
 
 
