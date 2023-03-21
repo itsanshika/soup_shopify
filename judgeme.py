@@ -8,30 +8,41 @@ from typing import Any
 import requests
 from bs4 import BeautifulSoup, ResultSet
 
-def Reviws_Data(productid,url):
-    # urlpage3 = 'https://judge.me/reviews/reviews_for_widget?url=plumgoodness-2.myshopify.com&shop_domain=plumgoodness-2.myshopify.com&platform=shopify&page=3&per_page=5&product_id='+productid
-    # urlpage6 = 'https://judge.me/reviews/reviews_for_widget?url=zilch-cosmetics.myshopify.com&shop_domain=zilch-cosmetics.myshopify.com&platform=shopify&page=2&per_page=5&product_id='+productid
 
 
-    for x in range(10):
-        page = str(x)
-        urlpage3 = 'https://judge.me/reviews/reviews_for_widget?url='+url+'&shop_domain='+url+'&platform=shopify&page='+page+'&per_page=5&product_id=' + productid
-        r = requests.get(urlpage3)
-        x = r.content.decode()
-        y = x.encode().decode("unicode-escape")
+def Product_Info(url):
+    req = requests.get(url)
+    soup = BeautifulSoup(req.content, 'html5lib')
+    f = open("/tmp/PageContent.html", 'w')
+    f.write(req.content.decode())
+    f.close()
+    productid = soup.find('span', attrs={'class': 'shopify-product-reviews-badge'})['data-id']
+    data = {
+        "productId": productid,
+        "url" : 'plumgoodness-2.myshopify.com',
+        "page": 10
+    }
+    return data
 
-        soup = BeautifulSoup(y, 'html5lib')
-        f = open("/tmp/judgeme.html", 'w')
-        f.write(y)
-        f.close()
+def Review_Info(productid,url,page):
+
+    Review_List = []
+
+    for x in range(page):
+        Page = str(x)
+        review_Url = 'https://judge.me/reviews/reviews_for_widget?url='+url+'&shop_domain='+url+'&platform=shopify&page='+Page+'&per_page=5&product_id=' + productid
+        r = requests.get(review_Url)
+        r_decode = r.content.decode()
+        review_page = r_decode.encode().decode("unicode-escape")
+
+        soup = BeautifulSoup(review_page, 'html5lib')
+
         tables = soup.find_all('div', attrs={'class': 'jdgm-rev jdgm-divider-top'})
         for table in tables:
             Content = table.find('div', attrs={'class': 'jdgm-rev__body'}).find('p').text
-            # print(Content)
             Review = table.find('span', attrs={'class': 'jdgm-rev__rating'})
             Review=Review['data-score']
             name = table.find('span', attrs={'class': 'jdgm-rev__author'}).text
-            # print(name)
             date = table.find('span', attrs={'class': 'jdgm-rev__timestamp jdgm-spinner'})
             date=date['data-content']
             data = {
@@ -40,7 +51,8 @@ def Reviws_Data(productid,url):
                 "REVIEW_CONTENT": Content,
                 "REVIEW_DATE": date
             }
-            print(json.dumps(data))
+            Review_List.append(json.dumps(data))
+
 
 
 
@@ -49,9 +61,10 @@ def Reviws_Data(productid,url):
 
 if __name__ == '__main__':
 
-    url6 = 'https://zilchcosmetics.com/collections/face/products/afterglow?variant=33427662733445'
-    url3='https://plumgoodness.com/products/phy-vitamin-sea-mint-sea-kelp-energizing-body-wash'
-    req = requests.get(url3)
+
+    url='https://plumgoodness.com/products/phy-vitamin-sea-mint-sea-kelp-energizing-body-wash'
+    Info= Product_Info(url)
+    req = requests.get(url)
     soup = BeautifulSoup(req.content, 'html5lib')
     f = open("/tmp/JudgeMe.html", 'w')
     f.write(req.content.decode())
@@ -61,10 +74,9 @@ if __name__ == '__main__':
 
     productid= soup.find('span',attrs={'class':'shopify-product-reviews-badge'})['data-id']
     url='plumgoodness-2.myshopify.com'
+    page=10
 
-    Reviws_Data(productid,url)
-
-    # print(Data_ID)
+    Review_Info(productid,url,page)
 
 
 
