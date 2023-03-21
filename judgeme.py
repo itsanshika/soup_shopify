@@ -14,9 +14,6 @@ from bs4 import BeautifulSoup, ResultSet
 def Product_Info(url):
     req = requests.get(url)
     soup = BeautifulSoup(req.content, 'html5lib')
-    f = open("/tmp/PageContent.html", 'w')
-    f.write(req.content.decode())
-    f.close()
     productid = soup.find('span', attrs={'class': 'shopify-product-reviews-badge'})['data-id']
     data = {
         "productId": productid,
@@ -53,6 +50,7 @@ def Review_Info(productid,url,page):
                 "REVIEW_DATE": date
             }
             Review_List.append(json.dumps(data))
+    print(Review_List)
 
 
 
@@ -64,20 +62,8 @@ if __name__ == '__main__':
 
 
     url='https://plumgoodness.com/products/phy-vitamin-sea-mint-sea-kelp-energizing-body-wash'
-    Info= Product_Info(url)
-    req = requests.get(url)
-    soup = BeautifulSoup(req.content, 'html5lib')
-    f = open("/tmp/JudgeMe.html", 'w')
-    f.write(req.content.decode())
-    f.close()
-
-
-
-    productid= soup.find('span',attrs={'class':'shopify-product-reviews-badge'})['data-id']
-    url='plumgoodness-2.myshopify.com'
-    page=10
-
-    Review_Info(productid,url,page)
+    Info = Product_Info(url)
+    Review_Info(Info['productId'],Info['url'],Info['page'])
 
 
 

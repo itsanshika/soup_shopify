@@ -38,7 +38,7 @@ def Review_Info(productId,productName,productSKU,apiKey,Id,page):
     Page = str(x)
     review_Url='https://stamped.io/api/widget?productId='+productId+'&productName='+productName+'&productSKU='+productSKU+'&page='+Page+'&apiKey='+apiKey+'&sId='+Id+'&take=5&widgetLanguage=en'
 
-
+    # review_Url='https://stamped.io/api/widget?productId=7557345673410&productName=Circle%20Necklace%20Silver%20-%20Elsa&productSKU=circle-necklace-silver-elsa&page=5&apiKey=pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN&storeUrl=linjer.myshopify.com&take=5&sort=featured&widgetLanguage=en'
     r = requests.get(review_Url)
     soup=BeautifulSoup(r.content,'html5lib')
     f=open("/tmp/review.html", 'w')
@@ -48,12 +48,13 @@ def Review_Info(productId,productName,productSKU,apiKey,Id,page):
     tables = soup.find_all('div', attrs={'class': '\\"stamped-review\\"'})
 
     for table in tables:
-
+        # print(table)
         Created = table.find('div', attrs={'class': '\\"created\\"'}).text
         Author=table.find('strong', attrs={'class': '\\"author\\"'}).text
         Location= table.find('div', attrs={'class': '\\"review-location\\"'}).text
+        Rating=table.find('span', attrs={'class':'\\"stamped-starratings" "stamped-review-header-starratings\\"'})
         Content= table.find('p', attrs={'class': '\\"stamped-review-content-body\\"'}).text
-
+        print(Rating)
         # print(Created , Author, Location, Content)
         data = {
             "REVIEWER_PROFILE": Author,
@@ -75,15 +76,15 @@ if __name__ == '__main__':
     url = 'https://www.linjer.co/collections/last-chance-sale/products/circle-necklace-silver-elsa'
     Info = Product_Info(url)
 
-    print(Info)
+    # print(Info['productId'])
 
-    productId='7557336006850'
-    productName='Bar+Necklace+Silver+-+Hanne'
-    productSKU='bar-necklace-silver-hanne'
-    apiKey='pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN'
-    Id='12175'
-    page=10
-    Review_Info(productId,productName,productSKU,apiKey,Id,page)
+    # productId='7557336006850'
+    # productName='Bar+Necklace+Silver+-+Hanne'
+    # productSKU='bar-necklace-silver-hanne'
+    # apiKey='pubkey-yLiAU08oKVX27Ka7886R6dyf5oE0RN'
+    # Id='12175'
+    # page=10
+    Review_Info(Info['productId'],Info['productName'],Info['productSKU'],Info['apiKey'],Info['Id'],Info['page'])
 
 
 
