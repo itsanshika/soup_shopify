@@ -71,6 +71,7 @@ def Review_Info(productId,productName,productSKU,apiKey,Id,page):
 if __name__ == '__main__':
 
 
+
     url = 'https://www.linjer.co/collections/last-chance-sale/products/circle-necklace-silver-elsa'
     Info = Product_Info(url)
 
